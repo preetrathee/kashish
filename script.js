@@ -706,20 +706,60 @@ async function saveRideToSheets(payload) {
     );
   }
 
-  const body = new URLSearchParams({
-    rideDate: payload.rideDate,
-    rideTime: payload.rideTime,
-    rideMessage: payload.rideMessage,
-  });
+  return new Promise((resolve, reject) => {
+    const iframeName = `apps-script-target-${Date.now()}`;
+    const iframe = document.createElement("iframe");
+    iframe.name = iframeName;
+    iframe.title = "Saving date";
+    iframe.style.display = "none";
 
-  /*
-    Apps Script web apps are easiest to post to with a simple
-    form-encoded request.
-  */
-  await fetch(APPS_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    body,
+    const form = document.createElement("form");
+    form.action = APPS_SCRIPT_URL;
+    form.method = "POST";
+    form.target = iframeName;
+    form.style.display = "none";
+
+    [
+      ["rideDate", payload.rideDate],
+      ["rideTime", payload.rideTime],
+      ["rideMessage", payload.rideMessage],
+    ].forEach(([name, value]) => {
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = name;
+      input.value = value;
+      form.appendChild(input);
+    });
+
+    let settled = false;
+    const finish = (fn) => {
+      if (settled) {
+        return;
+      }
+
+      settled = true;
+
+      window.setTimeout(() => {
+        form.remove();
+        iframe.remove();
+      }, 0);
+
+      fn();
+    };
+
+    iframe.addEventListener("load", () => {
+      finish(resolve);
+    });
+
+    window.setTimeout(() => {
+      if (!settled) {
+        finish(resolve);
+      }
+    }, 5000);
+
+    document.body.appendChild(iframe);
+    document.body.appendChild(form);
+    form.submit();
   });
 }
 
