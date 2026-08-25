@@ -26,6 +26,14 @@ const noAttemptMessages = [
   "The YES button is literally right there 👀❤️",
 ];
 
+/*
+  Paste your deployed Apps Script /exec URL here.
+  Example:
+  https://script.google.com/macros/s/AKfycbXXXXXXXXXXXXXXXXXXXX/exec
+*/
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwxU5CZ9oGuOnsOdy1wPZUnfm-2ya0ZmjQGQZ6rpdR3ZpyWAhvxCTibq9U6vHmeZK9bGw/exec";
+
 /* =============================================================
    ELEMENTS
 ============================================================= */
@@ -688,10 +696,38 @@ function formatSelectedTime(value) {
 }
 
 /* =============================================================
+   SAVE TO GOOGLE SHEETS
+============================================================= */
+
+async function saveRideToSheets(payload) {
+  if (!APPS_SCRIPT_URL) {
+    throw new Error(
+      "Missing Apps Script URL. Paste your /exec URL into APPS_SCRIPT_URL."
+    );
+  }
+
+  const body = new URLSearchParams({
+    rideDate: payload.rideDate,
+    rideTime: payload.rideTime,
+    rideMessage: payload.rideMessage,
+  });
+
+  /*
+    Apps Script web apps are easiest to post to with a simple
+    form-encoded request.
+  */
+  await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body,
+  });
+}
+
+/* =============================================================
    CONFIRM DATE
 ============================================================= */
 
-function confirmDate(event) {
+async function confirmDate(event) {
   event.preventDefault();
 
   formMessage.textContent = "";
@@ -730,6 +766,24 @@ function confirmDate(event) {
       "Time travel is cute, but please choose today or a future date 😂";
 
     dateInput.focus();
+
+    return;
+  }
+
+  try {
+    formMessage.textContent =
+      "Saving your date to Google Sheets...";
+
+    await saveRideToSheets({
+      rideDate: dateValue,
+      rideTime: timeValue,
+      rideMessage: noteValue,
+    });
+  } catch (error) {
+    console.error(error);
+
+    formMessage.textContent =
+      "I couldn't reach Google Sheets yet. Add the deployed /exec URL in `script.js` and try again.";
 
     return;
   }
