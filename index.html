@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#fff8f5" />
+  <meta name="description" content="A tiny romantic bike ride date story made with love." />
+  <title>A Little Something For You ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div id="heartsLayer" class="particle-layer" aria-hidden="true"></div>
+  <div id="confettiLayer" class="particle-layer" aria-hidden="true"></div>
+
+  <main class="story-shell">
+    <nav class="progress-card" aria-label="Story progress">
+      <span class="progress-label">A tiny story for you</span>
+      <div id="progressHearts" class="progress-hearts" aria-live="polite">
+        <span class="progress-heart is-filled">❤️</span>
+        <span class="progress-heart">○</span>
+        <span class="progress-heart">○</span>
+        <span class="progress-heart">○</span>
+      </div>
+    </nav>
+
+    <!-- =========================================================
+      CUSTOMIZE #1: Change her name below.
+      Example: Hey Aanya ❤️
+    ========================================================== -->
+    <section id="intro" class="story-section is-active" aria-hidden="false">
+      <div class="intro-copy reveal-up">
+        <span class="eyebrow">Made with a suspicious amount of effort ✨</span>
+        <h1>Hey Bestie ❤️</h1>
+        <p>I made something just for you...</p>
+      </div>
+
+      <!-- =======================================================
+        CUSTOMIZE #2: Replace these files inside /images.
+        Keep the same names OR change each src below.
+      ======================================================== -->
+      <div class="photo-collage" aria-label="Photo collage">
+        <button class="polaroid photo-one" type="button" aria-label="Enlarge photo 1">
+          <img src="images/media1.jpeg" alt="A favorite photo of my bestie" />
+          <span>favorite human ✨</span>
+        </button>
+        <button class="polaroid photo-two" type="button" aria-label="Enlarge photo 2">
+          <img src="images/media2.jpeg" alt="A happy memory with my bestie" />
+          <span>main character energy</span>
+        </button>
+        <button class="polaroid photo-three" type="button" aria-label="Enlarge photo 3">
+          <img src="images/media3.jpeg" alt="Another lovely photo of my bestie" />
+          <span>too cute, honestly</span>
+        </button>
+        <button class="polaroid photo-four" type="button" aria-label="Enlarge photo 4">
+          <img src="images/media4.jpeg" alt="One more favorite photo of my bestie" />
+          <span>proof this page needed you</span>
+        </button>
+      </div>
+
+      <button id="openButton" class="primary-button pulse-soft" type="button">
+        Open it 💌
+      </button>
+    </section>
+
+    <section id="question" class="story-section" aria-hidden="true">
+      <div class="question-wrap">
+        <div class="reveal-up">
+          <span class="eyebrow">Okay... tiny serious moment 👀</span>
+          <h2>Okay... I have a very important question.</h2>
+        </div>
+
+        <div id="questionReveal" class="question-reveal" aria-live="polite">
+          <div id="questionArea" class="glass-card question-card">
+            <!-- =================================================
+              CUSTOMIZE #3: Change the main date question here.
+            ================================================== -->
+            <p class="question-kicker">No pressure. (There is definitely a little pressure.)</p>
+            <h1>Would you like to go on a date with me? 🥺❤️</h1>
+
+            <div id="buttonZone" class="button-zone">
+              <button id="yesButton" class="yes-button" type="button">YES ❤️</button>
+              <button id="noButton" class="no-button" type="button">No 😏</button>
+            </div>
+
+            <p id="noMessage" class="no-message" aria-live="polite">Choose wisely 😌</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="celebration" class="story-section" aria-hidden="true">
+      <div class="glass-card celebration-card reveal-up">
+        <div class="celebration-icon" aria-hidden="true">❤️</div>
+        <span class="eyebrow">Excellent choice, bestie</span>
+        <h1>YAYYYYY! ❤️🥹</h1>
+        <p class="big-copy">I knew you'd make the right decision 😂❤️</p>
+        <p>So... how about a bike ride date? 🏍️✨</p>
+        <button id="planButton" class="primary-button" type="button">Plan Our Ride ❤️</button>
+      </div>
+    </section>
+
+    <section id="planner" class="story-section" aria-hidden="true">
+      <div class="glass-card planner-card reveal-up">
+        <span class="eyebrow">One last tiny mission</span>
+        <h1>Let's plan our ride 🏍️❤️</h1>
+        <p>Pick whatever feels perfect. I’ll handle the playlist 😌</p>
+
+        <form id="dateForm" novalidate>
+          <!-- =================================================
+            CUSTOMIZE #5: Modify/add bike ride questions here.
+            Keep the IDs if you want to reuse the existing JS.
+          ================================================== -->
+          <label class="field-label" for="dateInput">
+            <span>Pick a Date 📅</span>
+            <input id="dateInput" name="rideDate" type="date" required />
+          </label>
+
+          <label class="field-label" for="timeInput">
+            <span>Pick a Time ⏰</span>
+            <input id="timeInput" name="rideTime" type="time" required />
+          </label>
+
+          <label class="field-label" for="noteInput">
+            <span>Anything you want to tell me? 💌</span>
+            <textarea
+              id="noteInput"
+              name="rideNote"
+              rows="4"
+              maxlength="240"
+              placeholder="Coffee stop? Long ride? Sunset? 👀"
+            ></textarea>
+          </label>
+
+          <p id="formMessage" class="form-message" aria-live="polite"></p>
+          <button class="primary-button full-width" type="submit">Confirm Our Date ❤️</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="final" class="story-section" aria-hidden="true">
+      <div class="final-layout">
+        <div class="glass-card final-card reveal-up">
+          <span class="eyebrow">Officially locked in ✨</span>
+          <h1>It's a Date! ❤️</h1>
+
+          <div class="date-summary">
+            <div class="summary-row">
+              <span class="summary-icon" aria-hidden="true">🏍️</span>
+              <div><small>Plan</small><strong>Bike Ride Date</strong></div>
+            </div>
+            <div class="summary-row">
+              <span class="summary-icon" aria-hidden="true">📅</span>
+              <div><small>Date</small><strong id="finalDate">—</strong></div>
+            </div>
+            <div class="summary-row">
+              <span class="summary-icon" aria-hidden="true">⏰</span>
+              <div><small>Time</small><strong id="finalTime">—</strong></div>
+            </div>
+            <div id="finalNoteRow" class="summary-row is-hidden">
+              <span class="summary-icon" aria-hidden="true">💌</span>
+              <div><small>Your note</small><strong id="finalNote">—</strong></div>
+            </div>
+          </div>
+
+          <div class="checklist" aria-label="Date checklist">
+            <span>Bike ✅</span>
+            <span>Helmet ✅</span>
+            <span>Best company ✅</span>
+            <span>Perfect plan ✅</span>
+          </div>
+
+          <p class="final-line">Now I just have to wait for our date ❤️</p>
+        </div>
+
+        <div class="final-photo-wrap reveal-up">
+          <div class="polaroid final-polaroid">
+            <img src="images/photo1.png" alt="A favorite photo for our bike ride date" />
+            <span>see you on our ride ❤️</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="tiny-footer">Made for one very specific favorite person ❤️</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
