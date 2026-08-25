@@ -706,60 +706,20 @@ async function saveRideToSheets(payload) {
     );
   }
 
-  return new Promise((resolve, reject) => {
-    const iframeName = `apps-script-target-${Date.now()}`;
-    const iframe = document.createElement("iframe");
-    iframe.name = iframeName;
-    iframe.title = "Saving date";
-    iframe.style.display = "none";
+  const body = new URLSearchParams({
+    rideDate: payload.rideDate,
+    rideTime: payload.rideTime,
+    rideMessage: payload.rideMessage,
+  });
 
-    const form = document.createElement("form");
-    form.action = APPS_SCRIPT_URL;
-    form.method = "POST";
-    form.target = iframeName;
-    form.style.display = "none";
-
-    [
-      ["rideDate", payload.rideDate],
-      ["rideTime", payload.rideTime],
-      ["rideMessage", payload.rideMessage],
-    ].forEach(([name, value]) => {
-      const input = document.createElement("input");
-      input.type = "hidden";
-      input.name = name;
-      input.value = value;
-      form.appendChild(input);
-    });
-
-    let settled = false;
-    const finish = (fn) => {
-      if (settled) {
-        return;
-      }
-
-      settled = true;
-
-      window.setTimeout(() => {
-        form.remove();
-        iframe.remove();
-      }, 0);
-
-      fn();
-    };
-
-    iframe.addEventListener("load", () => {
-      finish(resolve);
-    });
-
-    window.setTimeout(() => {
-      if (!settled) {
-        finish(resolve);
-      }
-    }, 5000);
-
-    document.body.appendChild(iframe);
-    document.body.appendChild(form);
-    form.submit();
+  /*
+    The request is sent cross-origin. We don't need the response body,
+    only the POST reaching Apps Script.
+  */
+  await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body,
   });
 }
 
@@ -810,6 +770,13 @@ async function confirmDate(event) {
     return;
   }
 
+  if (window.location.protocol === "file:") {
+    formMessage.textContent =
+      "Open this page through a local server (for example `http://localhost:8000`) instead of double-clicking the HTML file, then try again.";
+
+    return;
+  }
+
   try {
     formMessage.textContent =
       "Saving your date to Google Sheets...";
@@ -827,6 +794,9 @@ async function confirmDate(event) {
 
     return;
   }
+
+  formMessage.textContent =
+    "Saved to Google Sheets ❤️";
 
   /*
     Add selected values
